@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function App() {
+export default function App() {   
   const [description, setDescription] = useState("");
   const [classification, setClassification] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -16,14 +16,16 @@ export default function App() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ description }),
-      });
+      }); 
 
       if (!response.ok) {
         throw new Error("API error");
       }
 
       const data = await response.json();
-      setClassification(data.classification_code);
+      console.log(data);
+      setClassification(data.classification);
+
     } catch (err) {
       setError("Failed to classify product.");
     } finally {
@@ -50,11 +52,11 @@ export default function App() {
         </button>
       </form>
 
-      {classification && !loading && (
+      {
         <div style={{ marginTop: 24, padding: 16, border: "1px solid #ccc" }}>
           <strong>Classification Code:</strong> {classification}
         </div>
-      )}
+      }
 
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
