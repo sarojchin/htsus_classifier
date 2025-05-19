@@ -1,9 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import boto3
 import os
 import json
+from sqlalchemy.orm import Session
+from src.database import get_db, Classification
 
 app = FastAPI()
 
@@ -19,6 +21,8 @@ app.add_middleware(
 class ProductRequest(BaseModel):
     description: str
 
+
+
 # Initialize Bedrock client
 brt = boto3.client("bedrock-runtime", region_name="us-west-2")
 model_id = "amazon.titan-text-express-v1"
@@ -29,7 +33,7 @@ Product: [Product Name]
 HTSUS Code: [Code]  
 Tariff Rate: [Rate]  
 The product is {description}. 
-"""
+"""     
 
     conversation = [
         {
@@ -45,14 +49,36 @@ The product is {description}.
             inferenceConfig={"maxTokens": 512, "temperature": 0, "topP": 0},
         )
         response_text = response["output"]["message"]["content"][0]["text"]
-        return response_text.strip()
+        return response_text.strip()    
     except Exception as e:
         print(f"ERROR: Can't invoke '{model_id}'. Reason: {e}")
         return "ERROR: Failed to classify product."
 
+
+# @app.post("/classify")
+# async def classify_product(req: ProductRequest):
+#     print("Product description: ", req.description)
+#     classification_response = classify_with_bedrock(req.description)
+#     print("Classification response: ", classification_response)
+#     return {"classification": classification_response}  
+    
+
+    
+
+
 @app.post("/classify")
-async def classify_product(req: ProductRequest):
+async def classify_product(req: ProductRequest, db: Session = Depends(get_db)):
     print("Product description: ", req.description)
     classification_response = classify_with_bedrock(req.description)
     print("Classification response: ", classification_response)
-    return {"classification": classification_response}
+    
+    db_classification = Classification(
+        product_description=req.description,
+        classification_result=classification_response
+    )
+    db.add(db_classification)
+    db.commit()
+    db.refresh(db_classification)
+    
+    return {"classification": classification_response}  
+
