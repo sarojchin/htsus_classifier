@@ -12,7 +12,7 @@ export default function App() {
     setError(null);
 
     try {
-      render_api_url = "https://htsus-classifier-2.onrender.com"
+      const render_api_url = "https://htsus-classifier-2.onrender.com"
       const response = await fetch(render_api_url + "/classify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
