@@ -73,3 +73,16 @@ async def classify_product(req: ProductRequest, db: Session = Depends(get_db)):
     
     return {"classification": classification_response}  
 
+
+
+@app.get("/test")
+async def test_endpoint(db: Session = Depends(get_db)):
+    db_classification = Classification(
+        product_description="SAMPLE",
+        classification_result="SAMPLE_RESULT"
+    )
+    db.add(db_classification)
+    db.commit()
+    db.refresh(db_classification)
+    return {"message": "API is working!"}
+

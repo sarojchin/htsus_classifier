@@ -5,8 +5,10 @@ from datetime import datetime
 import os
 
 # Database URL - you'll need to set this environment variable
-DATABASE_URL = "postgresql://postgres:Ortega20.01!@localhost:5432/customs_classifier"
+#DATABASE_URL = "postgresql://postgres:Ortega20.01!@localhost:5432/customs_classifier"
 
+#render:  
+DATABASE_URL = postgresql://postgres:[DB-PASSWORD]@db.hxmivjfbcexqdivhuoxi.supabase.co:5432/postgres
 
 # Create SQLAlchemy engine  
 engine = create_engine(DATABASE_URL)
