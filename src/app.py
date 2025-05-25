@@ -24,7 +24,10 @@ class ProductRequest(BaseModel):
 
 
 # Initialize Bedrock client
-brt = boto3.client("bedrock-runtime", region_name="us-west-2")
+brt = boto3.client("bedrock-runtime", region_name="us-west-2",
+                    aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+                    aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
+                    )
 model_id = "amazon.titan-text-express-v1"
 
 def classify_with_bedrock(description: str) -> str:
