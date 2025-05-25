@@ -8,13 +8,13 @@ import os
 #DATABASE_URL = "postgresql://postgres:Ortega20.01!@localhost:5432/customs_classifier"
 
 #render:  
-DATABASE_URL = "postgresql://postgres:[DB-PASSWORD]@db.hxmivjfbcexqdivhuoxi.supabase.co:5432/postgres"
+DATABASE_URL = f"postgresql://postgres:{os.getenv('DB_PASSWORD')}@db.hxmivjfbcexqdivhuoxi.supabase.co:5432/postgres"
+
 # Create SQLAlchemy engine  
 engine = create_engine(DATABASE_URL)
 
 # Create SessionLocal class
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
 
 # Create Base class
 Base = declarative_base()
