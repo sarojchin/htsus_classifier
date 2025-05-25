@@ -7,8 +7,8 @@ import os
 # Database URL - you'll need to set this environment variable
 #DATABASE_URL = "postgresql://postgres:Ortega20.01!@localhost:5432/customs_classifier"
 
-#render:  
-DATABASE_URL = f"postgresql://postgres:{os.getenv('DB_PASSWORD')}@db.hxmivjfbcexqdivhuoxi.supabase.co:5432/postgres"
+#hosted on render
+DATABASE_URL = "postgresql://classifications_user:xtliZyoPJwILVIhSYkwQbd4iRLBkGSsd@dpg-d0ppp7euk2gs739tvq50-a/classifications"
 
 # Create SQLAlchemy engine  
 engine = create_engine(DATABASE_URL)
