@@ -12,7 +12,8 @@ export default function App() {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:8000/classify", {
+      render_api_url = "https://htsus-classifier-2.onrender.com"
+      const response = await fetch(render_api_url + "/classify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ description }),
