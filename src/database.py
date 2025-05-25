@@ -13,7 +13,8 @@ engine = create_engine(DATABASE_URL)
 
 # Create SessionLocal class
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
+print("SessionLocal variable type: ", type(SessionLocal))
+print("SessionLocal memory address: ", id(SessionLocal))
 # Create Base class
 Base = declarative_base()
 
@@ -25,7 +26,7 @@ class Classification(Base):
     classification_result = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-# Create tables
+# Create tables     
 Base.metadata.create_all(bind=engine)
 
 # Dependency to get DB session

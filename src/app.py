@@ -55,15 +55,6 @@ The product is {description}.
         return "ERROR: Failed to classify product."
 
 
-# @app.post("/classify")
-# async def classify_product(req: ProductRequest):
-#     print("Product description: ", req.description)
-#     classification_response = classify_with_bedrock(req.description)
-#     print("Classification response: ", classification_response)
-#     return {"classification": classification_response}  
-    
-
-    
 
 
 @app.post("/classify")
