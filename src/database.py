@@ -25,8 +25,8 @@ class Classification(Base):
     id = Column(Integer, primary_key=True, index=True)
     product_description = Column(String)
     classification_result = Column(String)
-    htsus_code = Column(String)
-    tariff_rate = Column(String)
+    htsus_code = Column(String, nullable=True)
+    tariff_rate = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 # Create tables     
