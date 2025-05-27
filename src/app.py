@@ -1,18 +1,27 @@
 from fastapi import FastAPI, Depends
+<<<<<<< HEAD
+from fastapi.responses import JSONResponse
+=======
+>>>>>>> main
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import boto3
 import os
 import json
 from sqlalchemy.orm import Session
+<<<<<<< HEAD
+from src.database import get_db, Classification
+=======
 from srcdatabase import get_db, Classification
+>>>>>>> main
 
 app = FastAPI()
 
 # Allow React frontend to call API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React dev server origin
+    allow_origins=["https://htsus-classifier.vercel.app"],  # React dev server origin
+    #allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -21,8 +30,13 @@ app.add_middleware(
 class ProductRequest(BaseModel):
     description: str
 
+
+
 # Initialize Bedrock client
-brt = boto3.client("bedrock-runtime", region_name="us-west-2")
+brt = boto3.client("bedrock-runtime", region_name="us-west-2",
+                    aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+                    aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
+                    )
 model_id = "amazon.titan-text-express-v1"
 
 def classify_with_bedrock(description: str) -> str:
@@ -31,7 +45,8 @@ Product: [Product Name]
 HTSUS Code: [Code]  
 Tariff Rate: [Rate]  
 The product is {description}. 
-"""
+"""     
+
 
     conversation = [
         {
@@ -47,10 +62,17 @@ The product is {description}.
             inferenceConfig={"maxTokens": 512, "temperature": 0, "topP": 0},
         )
         response_text = response["output"]["message"]["content"][0]["text"]
-        return response_text.strip()
+        return response_text.strip()    
     except Exception as e:
         print(f"ERROR: Can't invoke '{model_id}'. Reason: {e}")
         return "ERROR: Failed to classify product."
+
+
+@app.middleware("http")
+async def debug_cors_response(request, call_next):
+    response = await call_next(request)
+    print("🔁 Response Headers:", response.headers)
+    return response
 
 @app.post("/classify")
 async def classify_product(req: ProductRequest, db: Session = Depends(get_db)):
@@ -58,7 +80,10 @@ async def classify_product(req: ProductRequest, db: Session = Depends(get_db)):
     classification_response = classify_with_bedrock(req.description)
     print("Classification response: ", classification_response)
     
+<<<<<<< HEAD
+=======
     # Store in database
+>>>>>>> main
     db_classification = Classification(
         product_description=req.description,
         classification_result=classification_response
@@ -69,3 +94,7 @@ async def classify_product(req: ProductRequest, db: Session = Depends(get_db)):
     
     return {"classification": classification_response}  
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> main

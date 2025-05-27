@@ -5,8 +5,15 @@ from datetime import datetime
 import os
 
 # Database URL - you'll need to set this environment variable
+<<<<<<< HEAD
+#DATABASE_URL = "postgresql://postgres:Ortega20.01!@localhost:5432/customs_classifier"
+
+#hosted on render
+DATABASE_URL = "postgresql://classifications_user:xtliZyoPJwILVIhSYkwQbd4iRLBkGSsd@dpg-d0ppp7euk2gs739tvq50-a/classifications"
+=======
 DATABASE_URL = "postgresql://postgres:Ortega20.01!@localhost:5432/customs_classifier"
 
+>>>>>>> main
 
 # Create SQLAlchemy engine  
 engine = create_engine(DATABASE_URL)
@@ -25,7 +32,11 @@ class Classification(Base):
     classification_result = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+<<<<<<< HEAD
+# Create tables     
+=======
 # Create tables
+>>>>>>> main
 Base.metadata.create_all(bind=engine)
 
 # Dependency to get DB session
