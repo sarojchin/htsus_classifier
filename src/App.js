@@ -12,25 +12,28 @@ export default function App() {
     setError(null);
 
     try {
+<<<<<<< HEAD
       const render_api_url = "https://htsus-classifier-2.onrender.com"
       const response = await fetch(render_api_url + "/classify", {
+=======
+      const response = await fetch("http://localhost:8000/classify", {    
+>>>>>>> main
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ description }),
       }); 
-
+          
       if (!response.ok) {
         throw new Error("API error");
       }
 
       const data = await response.json();
-      console.log(data);
       setClassification(data.classification);
 
     } catch (err) {
       setError("Failed to classify product.");
     } finally {
-      setLoading(false);
+      setLoading(false);  
     }
   };
 
@@ -40,7 +43,7 @@ export default function App() {
       <form onSubmit={handleSubmit}>
         <label htmlFor="desc">Product Description:</label>
         <textarea
-          id="desc"
+          id="desc"   
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={4}

@@ -1,12 +1,19 @@
 from fastapi import FastAPI, Depends
+<<<<<<< HEAD
 from fastapi.responses import JSONResponse
+=======
+>>>>>>> main
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import boto3
 import os
 import json
 from sqlalchemy.orm import Session
+<<<<<<< HEAD
 from src.database import get_db, Classification
+=======
+from srcdatabase import get_db, Classification
+>>>>>>> main
 
 app = FastAPI()
 
@@ -73,6 +80,10 @@ async def classify_product(req: ProductRequest, db: Session = Depends(get_db)):
     classification_response = classify_with_bedrock(req.description)
     print("Classification response: ", classification_response)
     
+<<<<<<< HEAD
+=======
+    # Store in database
+>>>>>>> main
     db_classification = Classification(
         product_description=req.description,
         classification_result=classification_response
@@ -83,4 +94,7 @@ async def classify_product(req: ProductRequest, db: Session = Depends(get_db)):
     
     return {"classification": classification_response}  
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
