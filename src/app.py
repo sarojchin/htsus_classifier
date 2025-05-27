@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import boto3
@@ -60,7 +61,11 @@ The product is {description}.
         return "ERROR: Failed to classify product."
 
 
-
+@app.middleware("http")
+async def debug_cors_response(request, call_next):
+    response = await call_next(request)
+    print("🔁 Response Headers:", response.headers)
+    return response
 
 @app.post("/classify")
 async def classify_product(req: ProductRequest, db: Session = Depends(get_db)):
@@ -78,16 +83,4 @@ async def classify_product(req: ProductRequest, db: Session = Depends(get_db)):
     
     return {"classification": classification_response}  
 
-
-
-@app.get("/test")
-async def test_endpoint(db: Session = Depends(get_db)):
-    db_classification = Classification(
-        product_description="SAMPLE",
-        classification_result="SAMPLE_RESULT"
-    )
-    db.add(db_classification)
-    db.commit()
-    db.refresh(db_classification)
-    return {"message": "API is working!"}
 
